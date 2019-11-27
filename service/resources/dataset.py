@@ -1,10 +1,12 @@
 from flask_restful import Resource
-from flask import request 
+from flask import request, flash, redirect
+from werkzeug.utils import secure_filename
 import os, shutil
 
 class Dataset(Resource):
     # 允许的文件后缀类型
     ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'}
+    UPLOAD_FOLDER = 'data'
 
     @staticmethod
     def allowed_file(filename):
@@ -29,7 +31,10 @@ class Dataset(Resource):
             return redirect(request.url)
 
         if file and Dataset.allowed_file(file.filename):
-            directory = os.path.join(app.config['UPLOAD_FOLDER'], 
+            directory = os.path.join(Dataset.UPLOAD_FOLDER, 
+                                    task_type,
+                                    user_id,
+                                    task_id,
                                     os.path.split(request.form['relativePath'])[0])
 
         # 若文件夹不存在，递归地创建
