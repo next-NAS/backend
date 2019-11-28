@@ -6,8 +6,9 @@ from service.config import config
 class TaskMetaData(Resource):
 
     def post(self, user_id, task_id):
-        task_type = request.form['task_type']
-        dataset_name = request.form['dataset_name']
+        data = request.get_json(force=True)
+        task_type = data['task_type']
+        dataset_name = data['dataset_name']
         meta_file_location = os.path.join(config['UPLOAD_FOLDER'], user_id, task_id)
         meta = {}
 
@@ -39,6 +40,8 @@ class TaskMetaData(Resource):
         sample_names = os.listdir(dataset_root)
         sample_size = [os.path.getsize(os.path.join(dataset_root, sample)) for sample in sample_names]
         sample_num = [self.file_counts(os.path.join(dataset_root, sample)) for sample in sample_names]
+        return [{'class': sample_names[i], 'size': sample_size[i], 'num': sample_num[i]} \
+                    for i in range(len(sample_names))]
     
     def file_counts(self, path):
         return len([f for f in os.listdir(path) if os.path.isfile(os.path.join(path, f))])
