@@ -38,10 +38,19 @@ class TaskMetaData(Resource):
             其中，size指的是子文件夹大小，num指的是样本数量，class指的是样本类别（即子文件名）
         '''
         sample_names = os.listdir(dataset_root)
-        sample_size = [os.path.getsize(os.path.join(dataset_root, sample)) for sample in sample_names]
+        sample_size = [self.dir_size(os.path.join(dataset_root, sample)) for sample in sample_names]
         sample_num = [self.file_counts(os.path.join(dataset_root, sample)) for sample in sample_names]
         return [{'class': sample_names[i], 'size': sample_size[i], 'num': sample_num[i]} \
                     for i in range(len(sample_names))]
+
+    def dir_size(path):
+        size = 0
+        for f in os.listdir(path):
+            full_path = os.path.join(path, f)
+            if os.path.isfile(full_path):
+                size += os.path.getsize(full_path)
+        return size
     
+
     def file_counts(self, path):
         return len([f for f in os.listdir(path) if os.path.isfile(os.path.join(path, f))])
