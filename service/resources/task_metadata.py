@@ -43,7 +43,7 @@ class TaskMetaData(Resource):
         return [{'class': sample_names[i], 'size': sample_size[i], 'num': sample_num[i]} \
                     for i in range(len(sample_names))]
 
-    def dir_size(path):
+    def dir_size(self, path):
         size = 0
         for f in os.listdir(path):
             full_path = os.path.join(path, f)
