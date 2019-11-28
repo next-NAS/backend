@@ -1,0 +1,47 @@
+{
+  "user": {
+    "user_id": "guest",
+    "password": ""
+  },
+  "tasks": 
+  [
+    {
+      "name": "example_task",
+      "task_type": "image-classification",
+      "dataset":
+      {
+        "name": "MyDataset",
+        "size": 132334,
+        "sample_num": 223,
+        "class_num": 4,
+        "classes": 
+        [
+          "牛", "羊", "狗", "猫", "猪"
+        ],
+        "nums":
+        [
+          45, 24, 61, 51, 42
+        ]       
+      }
+    },
+    {
+      "name": "ImageNet分类",
+      "task_type": "image-classification",
+      "dataset":
+      {
+        "name": "ImageNet",
+        "size": 1425324523,
+        "sample_num": 542455,
+        "class_num": 2,
+        "classes":
+        [
+          "dog", "cat"
+        ],
+        "nums":
+        [
+          134512, 407943
+        ]
+      }
+    }
+  ]
+}
