@@ -2,7 +2,7 @@ from flask_restful import Resource
 from flask import request, flash, redirect
 from werkzeug.utils import secure_filename
 import os, shutil
-from server.config import config
+from service.config import config
 
 class Dataset(Resource):
     # 允许的文件后缀类型
@@ -14,7 +14,7 @@ class Dataset(Resource):
             检查文件类型的合法性，目前只允许图片文件
         '''
         return '.' in filename and \
-           filename.rsplit('.', 1)[1].lower() in config['ALLOWED_EXTENSIONS']
+           filename.rsplit('.', 1)[1].lower() in Dataset.ALLOWED_EXTENSIONS
 
     def post(self, user_id, task_id):
         # 检查file是否在request中
@@ -30,12 +30,10 @@ class Dataset(Resource):
             flash('No selected file')
             return redirect(request.url)
 
-        task_type = request.form['task_type']
-
         dataset_name = os.path.split(request.form['relativePath'])[0]
 
         if file and Dataset.allowed_file(file.filename):
-            directory = os.path.join(Dataset.UPLOAD_FOLDER, 
+            directory = os.path.join(config['UPLOAD_FOLDER'], 
                                     user_id,
                                     task_id,
                                     dataset_name)

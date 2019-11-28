@@ -1,7 +1,7 @@
 from flask_restful import Resource
 from flask import request
 import os, json
-from server.config import config
+from service.config import config
 
 class TaskMetaData(Resource):
 
