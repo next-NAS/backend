@@ -3,11 +3,12 @@ from flask import request
 import os, json
 from service.config import config
 
-class TaskMetaData(Resource):
+class Tasks(Resource):
 
-    def post(self, user_id, task_id):
+    def post(self, user_id):
         data = request.get_json(force=True)
         task_type = data['task_type']
+        task_id = data['task_id']
         dataset_name = data['dataset_name']
         meta_file_location = os.path.join(config['UPLOAD_FOLDER'], user_id, task_id)
         meta = {}
