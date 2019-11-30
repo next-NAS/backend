@@ -5,6 +5,16 @@ from service.config import config
 
 class Tasks(Resource):
 
+    def get(self, user_id):
+        task_dirs = os.dirlist(config['UPLOAD_FOLDER'], user_id)
+        tasks = []
+        for td in task_dirs:
+            with open(os.path.join(td, 'task_meta_data')) as f:
+                meta_data = json.load(f)
+                tasks.append(meta_data)
+        return tasks, 200
+
+
     def post(self, user_id):
         data = request.get_json(force=True)
         task_type = data['task_type']
