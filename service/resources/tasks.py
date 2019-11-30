@@ -6,10 +6,11 @@ from service.config import config
 class Tasks(Resource):
 
     def get(self, user_id):
-        task_dirs = os.dirlist(config['UPLOAD_FOLDER'], user_id)
+        user_home = os.path.join(config['UPLOAD_FOLDER'], user_id)
+        task_dirs = os.listdir(user_home)
         tasks = []
         for td in task_dirs:
-            with open(os.path.join(td, 'task_meta_data')) as f:
+            with open(os.path.join(user_home, td, 'task_meta_data')) as f:
                 meta_data = json.load(f)
                 tasks.append(meta_data)
         return tasks, 200
