@@ -1,16 +1,16 @@
 from flask_restful import Resource
 from flask import request
 import os, json
-from service.config import config
+import service.config as config
 
 class Tasks(Resource):
 
     def get(self, user_id):
-        user_home = os.path.join(config['UPLOAD_FOLDER'], user_id)
+        user_home = os.path.join(config.UPLOAD_FOLDER, user_id)
         task_dirs = os.listdir(user_home)
         tasks = []
         for td in task_dirs:
-            with open(os.path.join(user_home, td, config['TASK_METADATA_FILE_NAME'])) as f:
+            with open(os.path.join(user_home, td, config.TASK_METADATA_FILE_NAME)) as f:
                 meta_data = json.load(f)
                 tasks.append(meta_data)
         return tasks, 200
@@ -21,10 +21,10 @@ class Tasks(Resource):
         task_type = data['task_type']
         task_id = data['task_id']
         dataset_name = data['dataset_name']
-        meta_file_location = os.path.join(config['UPLOAD_FOLDER'], user_id, task_id)
+        meta_file_location = os.path.join(config.UPLOAD_FOLDER, user_id, task_id)
         meta = {}
 
-        with open(os.path.join(meta_file_location, config['TASK_METADATA_FILE_NAME']), 'w') as f:
+        with open(os.path.join(meta_file_location, config.TASK_METADATA_FILE_NAME), 'w') as f:
             meta['name'] = task_id
             meta['task_type'] = task_type
 

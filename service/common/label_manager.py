@@ -1,6 +1,6 @@
 import os
 import csv
-from service.config import config
+import service.config as config
 
 class LabelManager(object):
 
@@ -13,7 +13,7 @@ class LabelManager(object):
         '''
             生成用于标记（文件名 - 类别）的csv文件
         '''
-        dataset_root = os.path.join(config['UPLOAD_FOLDER'], 
+        dataset_root = os.path.join(config.UPLOAD_FOLDER, 
                                     str(self._user_id), 
                                     str(self._task_id), 
                                     str(self._dataset_name))
@@ -21,7 +21,7 @@ class LabelManager(object):
         # 保存一个字典，用于类别的编码和解码
         self._class_dirs_with_code = dict(zip( range(len(class_dirs)) , class_dirs))
 
-        with open(os.path.join(dataset_root, config['LABEL_FILE_NAME']), 'w') as csv_file:
+        with open(os.path.join(dataset_root, config.LABEL_FILE_NAME), 'w') as csv_file:
             fieldnames = ['File Name', 'Label']
             writer = csv.DictWriter(csv_file, fieldnames=fieldnames)
             writer.writeheader()
