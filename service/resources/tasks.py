@@ -10,7 +10,7 @@ class Tasks(Resource):
         task_dirs = os.listdir(user_home)
         tasks = []
         for td in task_dirs:
-            with open(os.path.join(user_home, td, 'task_meta_data')) as f:
+            with open(os.path.join(user_home, td, config['TASK_METADATA_FILE_NAME'])) as f:
                 meta_data = json.load(f)
                 tasks.append(meta_data)
         return tasks, 200
@@ -24,7 +24,7 @@ class Tasks(Resource):
         meta_file_location = os.path.join(config['UPLOAD_FOLDER'], user_id, task_id)
         meta = {}
 
-        with open(os.path.join(meta_file_location, 'task_meta_data'), 'w') as f:
+        with open(os.path.join(meta_file_location, config['TASK_METADATA_FILE_NAME']), 'w') as f:
             meta['name'] = task_id
             meta['task_type'] = task_type
 
