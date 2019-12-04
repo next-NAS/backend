@@ -1,9 +1,25 @@
+import os
 import autokeras as ak
 from autokeras.image.image_supervised import load_image_dataset
 from autokeras.image.image_supervised import ImageClassifier
+from service.config import config
 
-x_train, y_train = load_image_dataset(csv_file_path="./data/guest/example_task/chest_xray/label.csv",
-                                      images_path="./data/guest/example_task/chest_xray/")
+class Trainer(object):
 
-clf = ImageClassifier(verbose=True)
-clf.fit(x_train, y_train, time_limit=10 * 60 * 60)
+    def __init__(self, user_id, task_id, dataset_name):
+        self._user_id = user_id
+        self._task_id = task_id
+        self._dataset_name = dataset_name
+    
+    def train(self):
+        dataset_root = os.path.join(config['UPLOAD_FOLDER'], 
+                                    str(self._user_id), 
+                                    str(self._task_id), 
+                                    str(self._dataset_name))
+        X, y = load_image_dataset(csv_file_path=os.path.join(dataset_root, config['LABEL_FILE_NAME'])
+                                    images_path=dataset_root)
+        
+        clf = ImageClassifier(verbose=True)
+        clf.fit(X, y, time_limit=10 * 60 * 60)
+
+        
